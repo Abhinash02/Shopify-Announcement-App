@@ -2,8 +2,15 @@
 
 client_id = "3cc5989af5b0d2caa8d2364b134b291c"
 name = "announcement-app"
-application_url = "https://example.com"
+application_url = "https://shopify-announcement.vercel.app"
 embedded = true
+
+[auth]
+redirect_urls = [
+  "https://shopify-announcement.vercel.app/auth/callback",
+  "https://shopify-announcement.vercel.app/auth/shopify/callback",
+  "https://shopify-announcement.vercel.app/api/auth/callback"
+]
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -44,9 +51,7 @@ api_version = "2026-07"
   uri = "/webhooks/app/scopes_update"
   topics = [ "app/scopes_update" ]
 
-[auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+
 
 [build]
-include_config_on_deploy = true
 automatically_update_urls_on_dev = true
