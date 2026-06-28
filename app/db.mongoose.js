@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://abhinash:abhinash@cluster0.kvut8us.mongodb.net/announcement_app?retryWrites=true&w=majority&appName=Cluster0";
+const MONGO_URI = process.env.MONGO_URI;
 
 // Connect to MongoDB
 export const connectToDB = async () => {
+  if (!MONGO_URI) {
+    throw new Error("MONGO_URI environment variable is not defined");
+  }
   if (mongoose.connection.readyState === 1) {
     return mongoose.connection.asPromise();
   }

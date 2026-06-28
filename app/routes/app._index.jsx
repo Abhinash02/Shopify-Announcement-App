@@ -1,13 +1,31 @@
 import { useEffect, useState } from "react";
-import { useFetcher } from "react-router";
+import { useFetcher, useLoaderData } from "react-router";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import { connectToDB, Announcement } from "../db.mongoose";
 
 export const loader = async ({ request }) => {
-  await authenticate.admin(request);
-  return null;
+  const { admin } = await authenticate.admin(request);
+
+  try {
+    const response = await admin.graphql(`
+      #graphql
+      query {
+        shop {
+          metafield(namespace: "my_app", key: "announcement") {
+            value
+          }
+        }
+      }
+    `);
+    const shopData = await response.json();
+    const announcementText = shopData.data?.shop?.metafield?.value || "";
+    return { announcementText };
+  } catch (error) {
+    console.error("Error loading announcement metafield:", error);
+    return { announcementText: "" };
+  }
 };
 
 export const action = async ({ request }) => {
@@ -61,16 +79,31 @@ export const action = async ({ request }) => {
     }
   );
 
+  const metafieldData = await metafieldResponse.json();
+  const userErrors = metafieldData.data?.metafieldsSet?.userErrors;
+  if (userErrors && userErrors.length > 0) {
+    console.error("Metafield sync errors:", userErrors);
+    return { success: false, errors: userErrors };
+  }
+
   return { success: true, text: announcementText };
 };
 
 export default function Index() {
+  const { announcementText } = useLoaderData();
   const fetcher = useFetcher();
   const shopify = useAppBridge();
   const isLoading = fetcher.state === "submitting" || fetcher.state === "loading";
 
   // State to hold the text the user types
-  const [announcement, setAnnouncement] = useState("");
+  const [announcement, setAnnouncement] = useState(announcementText || "");
+
+  // Keep state in sync with updated loader data
+  useEffect(() => {
+    if (announcementText !== undefined) {
+      setAnnouncement(announcementText);
+    }
+  }, [announcementText]);
 
   useEffect(() => {
     if (fetcher.data?.success) {
