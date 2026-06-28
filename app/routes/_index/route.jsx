@@ -37,7 +37,7 @@ export default function App() {
                   name="shop" 
                   placeholder="the-challenge-c8tkwma3.myshopify.com"
                 />
-                <span className={styles.helpText}>Enter your .myshopify.com URL</span>
+                <span className={styles.helpText}>Copy and Enter this URL the-challenge-c8tkwma3.myshopify.com</span>
               </label>
               <button className={styles.button} type="submit">
                 Log in to App
