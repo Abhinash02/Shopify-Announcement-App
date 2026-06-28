@@ -1,6 +1,9 @@
-{% if shop.metafields.my_app.announcement != blank %}
   <div class="announcement-banner" style="background-color: {{ block.settings.bg_color }}; color: {{ block.settings.text_color }};">
-    {{ shop.metafields.my_app.announcement }}
+    {% if shop.metafields.my_app.announcement != blank %}
+      {{ shop.metafields.my_app.announcement }}
+    {% else %}
+      App Embed is ON, but Metafield is empty!
+    {% endif %}
   </div>
 
   <style>
@@ -20,7 +23,6 @@
       padding-top: 45px !important; 
     }
   </style>
-{% endif %}
 
 {% schema %}
 {
