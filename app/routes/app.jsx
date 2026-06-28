@@ -6,7 +6,12 @@ import { authenticate } from "../shopify.server";
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
 
+<<<<<<< HEAD
   return { apiKey: process.env.SHOPIFY_API_KEY || "" };
+=======
+  // eslint-disable-next-line no-undef
+  return { apiKey: process.env.SHOPIFY_API_KEY || "3cc5989af5b0d2caa8d2364b134b291c" };
+>>>>>>> ba075f0f9e90cbda1ef543c069138404758b6e99
 };
 
 export default function App() {

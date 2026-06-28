@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { useFetcher, useLoaderData } from "react-router";
+=======
+import { useFetcher } from "react-router";
+>>>>>>> ba075f0f9e90cbda1ef543c069138404758b6e99
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../shopify.server";
 import { connectToDB, Announcement } from "../db.mongoose";
 
 export const loader = async ({ request }) => {
+<<<<<<< HEAD
   const { admin } = await authenticate.admin(request);
 
   try {
@@ -26,6 +31,10 @@ export const loader = async ({ request }) => {
     console.error("Error loading announcement metafield:", error);
     return { announcementText: "" };
   }
+=======
+  await authenticate.admin(request);
+  return null;
+>>>>>>> ba075f0f9e90cbda1ef543c069138404758b6e99
 };
 
 export const action = async ({ request }) => {
@@ -79,6 +88,7 @@ export const action = async ({ request }) => {
     }
   );
 
+<<<<<<< HEAD
   const metafieldData = await metafieldResponse.json();
   const userErrors = metafieldData.data?.metafieldsSet?.userErrors;
   if (userErrors && userErrors.length > 0) {
@@ -86,16 +96,22 @@ export const action = async ({ request }) => {
     return { success: false, errors: userErrors };
   }
 
+=======
+>>>>>>> ba075f0f9e90cbda1ef543c069138404758b6e99
   return { success: true, text: announcementText };
 };
 
 export default function Index() {
+<<<<<<< HEAD
   const { announcementText } = useLoaderData();
+=======
+>>>>>>> ba075f0f9e90cbda1ef543c069138404758b6e99
   const fetcher = useFetcher();
   const shopify = useAppBridge();
   const isLoading = fetcher.state === "submitting" || fetcher.state === "loading";
 
   // State to hold the text the user types
+<<<<<<< HEAD
   const [announcement, setAnnouncement] = useState(announcementText || "");
 
   // Keep state in sync with updated loader data
@@ -104,6 +120,9 @@ export default function Index() {
       setAnnouncement(announcementText);
     }
   }, [announcementText]);
+=======
+  const [announcement, setAnnouncement] = useState("");
+>>>>>>> ba075f0f9e90cbda1ef543c069138404758b6e99
 
   useEffect(() => {
     if (fetcher.data?.success) {
